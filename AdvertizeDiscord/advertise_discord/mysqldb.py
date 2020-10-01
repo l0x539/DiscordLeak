@@ -15,13 +15,14 @@ class DB:
         self.cursorclass = cursorclass
         self.cursor = None
 
-    def getConnection(self):                                                                                                                                            
-        return pymysql.connect(host=self.host,                                                                                                                            
+    def getConnection(self): 
+        self.connection = pymysql.connect(host=self.host,                                                                                                                            
                                     user=self.user,                                                                                                                   
                                     password=self.password,
                                     db=self.db,
                                     charset=self.charset,
-                                    cursorclass=self.cursorclass)
+                                    cursorclass=self.cursorclass)                                                                                                                                          
+        return self.connection
 
     def getCursor(self, connection=None):
         return connection.cursor() if connection else self.getConnection().cursor()
@@ -29,5 +30,7 @@ class DB:
     def execute(self, cmd, args:tuple=None, cursor=None):
         if not cursor:
             cursor = self.getCursor()
-        return cursor.execute(cmd, args)
+        cursor.execute(cmd, args)
+        self.connection.commit()
+        return cursor
 
