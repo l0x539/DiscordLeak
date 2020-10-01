@@ -125,7 +125,6 @@ class User:
                 for message in self.get_all_channel_messages(channel_id, Max=50):
                     if int(message['author']['id']) not in users:
                         users.append(int(message['author']['id']))
-                print(channel_id)
         users = list(set(users))
         self.reached_users = users
         return users

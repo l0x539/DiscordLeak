@@ -15,13 +15,14 @@ def get_tokens():
 
 
 if __name__ == "__main__":
-    for token in get_tokens():
-        try:
-            enumerate(token)
-        except Exception as e:
-            print(e)
-        try:
-            advertize(token)
-        except Exception as e:
-            print(e)
+    while 1:
+        for token in get_tokens():
+            try:
+                enumerate(token)
+            except Exception as e:
+                print(e)
+            try:
+                advertize(token)
+            except Exception as e:
+                print(e)
     

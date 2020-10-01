@@ -27,6 +27,9 @@ def advertize(token):
     for c in save.get_user(current_user['id']):
         for user_id in json.loads(c['connections']):
             send_message(user, user_id, "**CHEAP**CHEAP YouTube Views, Facebook, Instagram, Twitter Likes & Much more! https://social-celebrity.com/\nhttps://m.youtube.com/watch?feature=emb_title&v=jF69mebpeCc")
+            sent = True
+            break
+        if sent: break
 
 def main():
     advertize(sys.argv[1])
