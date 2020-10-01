@@ -20,5 +20,5 @@ CREATE TABLE channels_messages (
 
 CREATE TABLE messages_sent (
     receipent_id VARCHAR(50),
-    message TEXT
+    date_added TEXT
 );
