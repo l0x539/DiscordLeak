@@ -21,7 +21,10 @@ if __name__ == "__main__":
 
     if config.getboolean('Unit', 'init'): save.save_user_connections(user_info['id'], connections)
     else:
-        for c in save.get_user(user_info['id']):
+        user_users = save.get_user(user_info['id'])
+        if not user:
+            print("make sure you switch init to true first, run program, then switch it back.")
+        for c in user_users:
             for connection in json.loads(c['connections']):
                 user.send_message(int(connection), sys.argv[2])
-                
+

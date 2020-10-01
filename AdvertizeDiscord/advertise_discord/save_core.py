@@ -16,10 +16,10 @@ class Save:
     
     def check_user_exist(self, user_id: int):
         c = self.db.execute("SELECT * FROM discord_users WHERE user_id=%s", (user_id,))
-        print(c)
+        if not c:
+            return False
         for cursor in c:
             return cursor
-        return False
 
     def save_user_init(self, user_id: int):
         if not self.check_user_exist(user_id): self.db.execute("INSERT INTO discord_users  (user_id, insert_time) VALUES(%s, %s)", (user_id, time.strftime('%Y-%m-%d %H:%M:%S')))
