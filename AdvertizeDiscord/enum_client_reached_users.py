@@ -2,7 +2,7 @@ from advertise_discord.mysqldb import *
 from advertise_discord.user import *
 from advertise_discord.save_core import *
 
-def enumerate():
+def enumerate(token):
     from configparser import ConfigParser
 
     config = ConfigParser()
@@ -12,7 +12,7 @@ def enumerate():
 
     save = Save(db)
 
-    user = User(sys.argv[1], proxies={
+    user = User(token, proxies={
         'http':'socks5h://localhost:9050',
         'https':'socks5h://localhost:9050'
     })
@@ -24,7 +24,7 @@ def enumerate():
     save.save_user_connections(user_info['id'], connections)
 
 def main():
-    enumerate()
+    enumerate(sys.argv[1])
 
 if __name__ == "__main__":
     main()
