@@ -4,7 +4,7 @@ import sys
 from time import sleep
 
 class User:
-    def __init__(self, token: str, route="https://discord.com", api_version=8, init=False):
+    def __init__(self, token: str, route="https://discord.com", api_version=8, init=False, proxies:dict=None):
         self.token = token
         self.route = route
         self.api = f"/api/v{api_version}/"
@@ -13,6 +13,7 @@ class User:
             "authorization": token,
             "Content-Type": "application/json"
             }
+        self.proxies = proxies
         self.guilds = []
         self.reached_users = []
         self.channels = []
@@ -21,7 +22,7 @@ class User:
             self.get_all_users()
     
     def get_user_infos(self):
-        r = requests.get(self.route + self.api + "users/@me", headers=self.headers)
+        r = requests.get(self.route + self.api + "users/@me", headers=self.headers, proxies=self.proxies)
 
         if 'message' in json.loads(r.content):
             raise Exception(json.loads(r.content)['message'])
@@ -31,7 +32,7 @@ class User:
     def open_dm(self, user_id: int):
         r = requests.post(self.route + self.api + "users/@me/channels", headers=self.headers, json={
             "recipient_id": user_id
-        })
+        }, proxies=self.proxies)
         if 'message' in json.loads(r.content):
             raise Exception(json.loads(r.content)['message'])
 
@@ -45,7 +46,7 @@ class User:
         
         r = requests.post(self.route + self.api + f"channels/{self.opened_dm}/messages", headers=self.headers, json={
             "content": content
-        })
+        }, proxies=self.proxies)
 
         if 'message' in json.loads(r.content):
             raise Exception(json.loads(r.content)['message'])
@@ -53,7 +54,7 @@ class User:
         return json.loads(r.content)            # dict message
 
     def get_all_dms(self):
-        r = requests.get(self.route + self.api + "users/@me/channels", headers=self.headers)
+        r = requests.get(self.route + self.api + "users/@me/channels", headers=self.headers, proxies=self.proxies)
 
         if 'message' in json.loads(r.content):
                 raise Exception(json.loads(r.content)['message'])
@@ -64,7 +65,7 @@ class User:
         messages = []
         last_message_id = before
         for _ in range((limit//100)+1):
-            r = requests.get(self.route + self.api + f"channels/{channel_id}/messages?limit={limit%100}" + (f"&before={last_message_id}" if last_message_id else ""), headers=self.headers)
+            r = requests.get(self.route + self.api + f"channels/{channel_id}/messages?limit={limit%100}" + (f"&before={last_message_id}" if last_message_id else ""), headers=self.headers, proxies=self.proxies)
 
             if 'message' in json.loads(r.content):
                 if json.loads(r.content)['message'] == 'Missing Access':
@@ -84,7 +85,7 @@ class User:
         return messages         # list of dicts messages
 
     def get_guild_channels(self, guild_id):
-        r = requests.get(self.route + self.api + f"guilds/{guild_id}/channels", headers=self.headers)
+        r = requests.get(self.route + self.api + f"guilds/{guild_id}/channels", headers=self.headers, proxies=self.proxies)
         channels = []
         for channel in json.loads(r.content):
             if channel['type'] == 0:
@@ -93,7 +94,7 @@ class User:
         return list(set(channels))            # list of channels id
 
     def get_possible_guilds(self):
-        r = requests.get(self.route + self.api + "users/@me/affinities/guilds", headers=self.headers)
+        r = requests.get(self.route + self.api + "users/@me/affinities/guilds", headers=self.headers, proxies=self.proxies)
 
         if 'message' in json.loads(r.content):
                 raise Exception(json.loads(r.content)['message'])

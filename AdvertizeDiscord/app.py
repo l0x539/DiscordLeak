@@ -13,7 +13,10 @@ if __name__ == "__main__":
 
     save = Save(db)
 
-    user = User(sys.argv[1])
+    user = User(sys.argv[1], proxies={
+        'http':'socks5h://localhost:9050',
+        'https':'socks5h://localhost:9050'
+    })
 
     user_info = user.get_user_infos()
 
