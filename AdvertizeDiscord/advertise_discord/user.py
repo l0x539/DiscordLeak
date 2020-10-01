@@ -132,5 +132,8 @@ class User:
 
 
 if __name__ == "__main__":
-    user = User(sys.argv[1], init=True)
+    user = User("sys.argv[1]", init=True, proxies={
+        'http':'socks5h://localhost:9050',
+        'https':'socks5h://localhost:9050'
+    })
     print(user.reached_users)

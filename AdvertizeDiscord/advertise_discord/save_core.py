@@ -42,3 +42,14 @@ class Save:
     
     def get_channel_messages(self, channel_id:int):
         return self.db.execute("SELECT * FROM channels_messages WHERE channel_id=%s", (channel_id, ))
+
+    def add_sent(self, receipent_id:int):
+        return self.db.execute("INSERT INTO messages_sent (receipent_id, date_added) VALUES (%s, %s)", (receipent_id, time.strftime('%Y-%m-%d %H:%M:%S')))
+    
+    def check_sent(self, receipent_id:int):
+        c = self.db.execute("SELECT * FROM messages_sent WHERE receipent_id=%s", (receipent_id, ))
+
+        for cursor in c:
+            return cursor
+        
+        return False
