@@ -1,6 +1,7 @@
 import requests
 import json
 import sys
+from time import sleep
 
 class User:
     def __init__(self, token: str, route="https://discord.com", api_version=8, init=False):
@@ -68,7 +69,11 @@ class User:
             if 'message' in json.loads(r.content):
                 if json.loads(r.content)['message'] == 'Missing Access':
                     continue
-                raise Exception(json.loads(r.content)['message'])
+                elif 'You are being rate limited' in json.loads(r.content)['message']:
+                    sleep(5)
+                    continue
+                else:
+                    raise Exception(json.loads(r.content)['message'])
 
             messages += json.loads(r.content)
             if len(messages) > 1:
