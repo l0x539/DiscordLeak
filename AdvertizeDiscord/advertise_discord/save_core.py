@@ -9,7 +9,7 @@ class Save:
         pass
 
     def save_user_connections(self, user_id: int, connections: list):
-        if not self.check_user_exist(self, user_id): self.save_user_init(self, user_id)
+        if not self.check_user_exist(user_id): self.save_user_init(self, user_id)
 
         self.db.execute("UPDATE discord_users SET connections=%s, insert_time=%s WHERE user_id=%s", (json.dumps(connections), time.strftime('%Y-%m-%d %H:%M:%S'), user_id))
 
