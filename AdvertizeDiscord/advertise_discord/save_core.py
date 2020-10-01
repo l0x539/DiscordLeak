@@ -16,6 +16,7 @@ class Save:
     
     def check_user_exist(self, user_id: int):
         c = self.db.execute("SELECT * FROM discord_users WHERE user_id=%s", (user_id,))
+        print(c)
         for cursor in c:
             return cursor
         return False
